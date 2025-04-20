@@ -2,6 +2,8 @@
 
 Ich habe jetzt schon mal ein System über spring initializr aufgesetzt
 Habe auch direkt eine gitignore aufgesetzt, damit unwichtige Dateien nicht hier im Repository landen. 
+Schon mal als Information, dass System wird über Eclipse (Version: 2024-09) entwickelt
+Es läuft auf der Java JDK 21
 
 ## Erster Schritt
 

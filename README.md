@@ -5,6 +5,9 @@ Habe auch direkt eine gitignore aufgesetzt, damit unwichtige Dateien nicht hier 
 Schon mal als Information, dass System wird über Eclipse (Version: 2024-09) entwickelt
 Es läuft auf der Java JDK 21
 
+https://www.oracle.com/de/java/technologies/downloads/#jdk21-windows
+https://git-scm.com/downloads/win
+
 ## Erster Schritt
 
 Es wäre jetzt eure Aufgabe, jetzt euch mal den Stuss hier zu ziehen. 

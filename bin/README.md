@@ -85,7 +85,7 @@ Damit weiß jeder sofort, dass du an einem Login-Feature arbeitest.
 | `git push`                     | Überträgt die Änderungen ins Remote-Repository                |
 | `git pull`                     | Holt die neuesten Änderungen aus dem Remote-Repository        |
 | `git checkout -b branchname`   | Erstellt einen neuen Branch und wechselt sofort darauf        |
-| `git checkout branchname`      | Wechselt zu einem bestehenden Branch                          |
+| `git checkout branchname`      | Wechselt zu einem bestehenden Branch                         |
 
 ---
 

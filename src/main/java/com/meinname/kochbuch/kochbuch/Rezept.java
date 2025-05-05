@@ -40,7 +40,7 @@ public class Rezept {
     private Schwierigkeitsgrad schwierigkeitsgrad;
 
     @OneToMany(mappedBy = "rezept", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Bild> bilder = new ArrayList<>();
+    private List<String> bilder = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "nutzer_id")
@@ -88,8 +88,8 @@ public class Rezept {
         this.schwierigkeitsgrad = schwierigkeitsgrad;
     }
 
-    public List<Bild> getBilder() { return bilder; }
-    public void setBilder(List<Bild> bilder) { this.bilder = bilder; }
+    public List<String> getBilder() { return bilder; }
+    public void setBilder(List<String> bilder) { this.bilder = bilder; }
 
     public Nutzer getNutzer() { return nutzer; }
     public void setNutzer(Nutzer nutzer) { this.nutzer = nutzer; }

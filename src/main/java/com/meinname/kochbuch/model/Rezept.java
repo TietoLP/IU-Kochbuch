@@ -41,6 +41,7 @@ public class Rezept {
     @JoinColumn(name = "schwierigkeitsgrad_id")
     private Schwierigkeitsgrad schwierigkeitsgrad;
 
+    // @OneToMany(mappedBy = "rezept", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<String> bilder = new ArrayList<>();
 
     @ManyToOne

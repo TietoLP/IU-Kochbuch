@@ -89,3 +89,5 @@ Damit weiß jeder sofort, dass du an einem Login-Feature arbeitest.
 
 ---
 
+git add .; git commit -m "kommentar"; git push
+

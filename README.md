@@ -91,3 +91,18 @@ Damit weiß jeder sofort, dass du an einem Login-Feature arbeitest.
 
 git add .; git commit -m "kommentar"; git push
 
+
+## Datenbank Daten
+
+### internetseite
+
+https://www.freesqldatabase.com/
+
+Email: leonkinski@gmail.com
+Passwort: BULDrL$Da&f.3j&
+
+### PHPMYADMIN 
+
+Server: sql7.freesqldatabase.com
+Nutzername: sql7777037
+Passwort: WXF8L2bSs6

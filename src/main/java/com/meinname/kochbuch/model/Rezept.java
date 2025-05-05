@@ -1,4 +1,4 @@
-package com.meinname.kochbuch.kochbuch;
+package com.meinname.kochbuch.model;
 
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -14,13 +14,14 @@ public class Rezept {
 
     private String titel;
 
+/*
     @ManyToMany
     @JoinTable(
         name = "rezept_kategorie",
         joinColumns = @JoinColumn(name = "rezept_id"),
         inverseJoinColumns = @JoinColumn(name = "kategorie_id")
-    )
-    private List<Kategorie> kategorien = new ArrayList<>();
+     )
+     private List<Kategorie> kategorien = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -28,8 +29,9 @@ public class Rezept {
         joinColumns = @JoinColumn(name = "rezept_id"),
         inverseJoinColumns = @JoinColumn(name = "zutat_id")
     )
-    private List<Zutat> zutaten = new ArrayList<>();
+    // private List<Zutat> zutaten = new ArrayList<>();
 
+*/
     @Column(length = 2000)
     private String beschreibung;
 
@@ -39,8 +41,7 @@ public class Rezept {
     @JoinColumn(name = "schwierigkeitsgrad_id")
     private Schwierigkeitsgrad schwierigkeitsgrad;
 
-    @OneToMany(mappedBy = "rezept", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Bild> bilder = new ArrayList<>();
+    private List<String> bilder = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "nutzer_id")
@@ -71,11 +72,11 @@ public class Rezept {
     public String getTitel() { return titel; }
     public void setTitel(String titel) { this.titel = titel; }
 
-    public List<Kategorie> getKategorien() { return kategorien; }
-    public void setKategorien(List<Kategorie> kategorien) { this.kategorien = kategorien; }
+    // public List<Kategorie> getKategorien() { return kategorien; }
+    // public void setKategorien(List<Kategorie> kategorien) { this.kategorien = kategorien; }
 
-    public List<Zutat> getZutaten() { return zutaten; }
-    public void setZutaten(List<Zutat> zutaten) { this.zutaten = zutaten; }
+    // public List<Zutat> getZutaten() { return zutaten; }
+    // public void setZutaten(List<Zutat> zutaten) { this.zutaten = zutaten; }
 
     public String getBeschreibung() { return beschreibung; }
     public void setBeschreibung(String beschreibung) { this.beschreibung = beschreibung; }
@@ -88,8 +89,8 @@ public class Rezept {
         this.schwierigkeitsgrad = schwierigkeitsgrad;
     }
 
-    public List<Bild> getBilder() { return bilder; }
-    public void setBilder(List<Bild> bilder) { this.bilder = bilder; }
+    public List<String> getBilder() { return bilder; }
+    public void setBilder(List<String> bilder) { this.bilder = bilder; }
 
     public Nutzer getNutzer() { return nutzer; }
     public void setNutzer(Nutzer nutzer) { this.nutzer = nutzer; }

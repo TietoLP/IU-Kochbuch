@@ -1,19 +1,19 @@
-package com.meinname.kochbuch.kochbuch;
+package com.meinname.kochbuch.model;
 
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
-@IdClass(FavoritKey.class)
 public class Favorit {
 
     @Id
     @ManyToOne
+    @JoinColumn(name = "nutzer_id") // Annahme: Spalte in der favorit-Tabelle
     private Nutzer nutzer;
 
     @Id
     @ManyToOne
+    @JoinColumn(name = "rezept_id") // Annahme: Spalte in der favorit-Tabelle
     private Rezept rezept;
 
     @Column(name = "favorisiert_am")

@@ -1,13 +1,14 @@
-package com.meinname.kochbuch.kochbuch;
+package com.meinname.kochbuch.model;
 
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Schwierigkeitsgrad {
+public class Zutat {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;

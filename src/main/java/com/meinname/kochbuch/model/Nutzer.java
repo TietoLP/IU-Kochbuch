@@ -1,4 +1,4 @@
-package com.meinname.kochbuch.kochbuch;
+package com.meinname.kochbuch.model;
 
 import jakarta.persistence.*;
 import java.util.ArrayList;

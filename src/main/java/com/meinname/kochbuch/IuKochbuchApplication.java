@@ -1,4 +1,4 @@
-package com.meinname.kochbuch.kochbuch;
+package com.meinname.kochbuch;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

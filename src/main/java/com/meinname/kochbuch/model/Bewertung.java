@@ -7,20 +7,72 @@ import java.time.LocalDateTime;
 public class Bewertung {
 
     @Id
-    @ManyToOne
-    @JoinColumn(name = "nutzer_id") // Name der Spalte, die auf die Nutzer-ID verweist
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "nutzer_id", nullable = false)
     private Nutzer nutzer;
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "rezept_id") // Name der Spalte, die auf die Rezept-ID verweist
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "rezept_id", nullable = false)
     private Rezept rezept;
 
     @Column(nullable = false)
     private Integer sterne;
 
-    @Column(name = "bewertet_am")
+    @Column(name = "bewertet_am", nullable = false)
     private LocalDateTime bewertetAm = LocalDateTime.now();
 
-    // Getter, Setter, Konstruktoren
+    // Konstruktoren
+    public Bewertung() {}
+
+    public Bewertung(Nutzer nutzer, Rezept rezept, Integer sterne) {
+        this.nutzer = nutzer;
+        this.rezept = rezept;
+        this.sterne = sterne;
+        this.bewertetAm = LocalDateTime.now();
+    }
+
+    // Getter und Setter
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Nutzer getNutzer() {
+        return nutzer;
+    }
+
+    public void setNutzer(Nutzer nutzer) {
+        this.nutzer = nutzer;
+    }
+
+    public Rezept getRezept() {
+        return rezept;
+    }
+
+    public void setRezept(Rezept rezept) {
+        this.rezept = rezept;
+    }
+
+    public Integer getSterne() {
+        return sterne;
+    }
+
+    public void setSterne(Integer sterne) {
+        this.sterne = sterne;
+    }
+
+    public LocalDateTime getBewertetAm() {
+        return bewertetAm;
+    }
+
+    public void setBewertetAm(LocalDateTime bewertetAm) {
+        this.bewertetAm = bewertetAm;
+    }
 }

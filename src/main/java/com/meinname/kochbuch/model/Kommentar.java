@@ -21,9 +21,6 @@ public class Kommentar {
     @JoinColumn(name = "rezept_id", nullable = false)
     private Rezept rezept;
 
-    @Column(name = "kommentiert_am", nullable = false)
-    private LocalDateTime kommentiertAm = LocalDateTime.now();
-
     // Standardkonstruktor
     public Kommentar() {
     }
@@ -33,7 +30,6 @@ public class Kommentar {
         this.text = text;
         this.nutzer = nutzer;
         this.rezept = rezept;
-        this.kommentiertAm = LocalDateTime.now();
     }
 
     // Getter und Setter
@@ -68,13 +64,5 @@ public class Kommentar {
 
     public void setRezept(Rezept rezept) {
         this.rezept = rezept;
-    }
-
-    public LocalDateTime getKommentiertAm() {
-        return kommentiertAm;
-    }
-
-    public void setKommentiertAm(LocalDateTime kommentiertAm) {
-        this.kommentiertAm = kommentiertAm;
     }
 }

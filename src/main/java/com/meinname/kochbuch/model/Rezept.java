@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "rezepte")
 public class Rezept {
 
     @Id

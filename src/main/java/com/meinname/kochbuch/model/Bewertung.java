@@ -21,9 +21,6 @@ public class Bewertung {
     @Column(nullable = false)
     private Integer sterne;
 
-    @Column(name = "bewertet_am", nullable = false)
-    private LocalDateTime bewertetAm = LocalDateTime.now();
-
     // Konstruktoren
     public Bewertung() {}
 
@@ -31,7 +28,6 @@ public class Bewertung {
         this.nutzer = nutzer;
         this.rezept = rezept;
         this.sterne = sterne;
-        this.bewertetAm = LocalDateTime.now();
     }
 
     // Getter und Setter
@@ -66,13 +62,5 @@ public class Bewertung {
 
     public void setSterne(Integer sterne) {
         this.sterne = sterne;
-    }
-
-    public LocalDateTime getBewertetAm() {
-        return bewertetAm;
-    }
-
-    public void setBewertetAm(LocalDateTime bewertetAm) {
-        this.bewertetAm = bewertetAm;
     }
 }

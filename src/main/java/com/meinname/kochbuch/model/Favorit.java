@@ -16,8 +16,19 @@ public class Favorit {
     @JoinColumn(name = "rezept_id") // Annahme: Spalte in der favorit-Tabelle
     private Rezept rezept;
 
-    @Column(name = "favorisiert_am")
-    private java.time.LocalDateTime favorisiertAm = java.time.LocalDateTime.now();
+    public Nutzer getNutzer() {
+        return nutzer;
+    }
 
-    // Getter, Setter, Konstruktoren
+    public void setNutzer(Nutzer nutzer) {
+        this.nutzer = nutzer;
+    }
+
+    public Rezept getRezept() {
+        return rezept;
+    }
+
+    public void setRezept(Rezept rezept) {
+        this.rezept = rezept;
+    }
 }

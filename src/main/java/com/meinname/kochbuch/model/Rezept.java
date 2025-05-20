@@ -22,7 +22,7 @@ public class Rezept {
     )
     private List<Kategorie> kategorien = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST) // <-- Cascade hinzufügen
     @JoinTable(
         name = "rezept_zutat",
         joinColumns = @JoinColumn(name = "rezept_id"),

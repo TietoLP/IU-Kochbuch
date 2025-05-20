@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/rezepte")
+@RequestMapping("/api/rezepte")
 public class RezeptController {
 
     @Autowired
     private RezeptRepository rezeptRepo;
 
     @GetMapping
-    public List<Rezept> alleRezepte() {
+    public List<Rezept> getAlleRezepte() {
         return rezeptRepo.findAll();
     }
 

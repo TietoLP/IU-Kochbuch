@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Kochbuch - Startseite</title>
+</head>
+<body>
+	<div class="cook-navbar">
+		<nav>
+			<li><a href="index.html">Startseite</a></li>
+			<li><a href="#">Rezepte</a></li>
+			<li><a href="#">Eigene Rezepte</a></li>
+			<li><a href="#">Favoriten</a></li>
+		</nav>
+	</div>
+    <h1>Meine Rezepte</h1>
+    <ul id="rezeptListe"></ul>
+
+    <script>
+        fetch('/api/rezepte')
+            .then(response => response.json())
+            .then(rezepte => {
+                const liste = document.getElementById('rezeptListe');
+                rezepte.forEach(r => {
+                    const li = document.createElement('li');
+                    li.textContent = r.name;
+                    liste.appendChild(li);
+                });
+            });
+    </script>
+</body>
+</html>

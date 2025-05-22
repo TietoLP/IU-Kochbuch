@@ -12,14 +12,19 @@ import java.util.List;
 @RequestMapping("/api/einheit")
 public class EinheitController {
 
-    private final EinheitRepository einheitRepository;
+    private final EinheitRepository einheitRepo;
 
     public EinheitController(EinheitRepository einheitRepository) {
-        this.einheitRepository = einheitRepository;
+        this.einheitRepo = einheitRepository;
     }
 
     @PostMapping
     public Einheit neueEinheit(@RequestBody Einheit einheit) {
-        return einheitRepository.save(einheit);
+        return einheitRepo.save(einheit);
+    }
+    
+    @DeleteMapping("/{id}")
+    public void einheitLoeschen(@PathVariable Long id) {
+    	einheitRepo.deleteById(id);
     }
 }

@@ -12,14 +12,19 @@ import java.util.List;
 @RequestMapping("/api/bewertung")
 public class BewertungController {
 
-    private final BewertungRepository bewertungRepository;
+    private final BewertungRepository bewertungRepo;
 
     public BewertungController(BewertungRepository BewertungRepository) {
-        this.bewertungRepository = BewertungRepository;
+        this.bewertungRepo = BewertungRepository;
     }
 
     @PostMapping
     public Bewertung neueZutat(@RequestBody Bewertung bewertung) {
-        return bewertungRepository.save(bewertung);
+        return bewertungRepo.save(bewertung);
+    }
+    
+    @DeleteMapping("/{id}")
+    public void bewertungLoeschen(@PathVariable Long id) {
+    	bewertungRepo.deleteById(id);
     }
 }

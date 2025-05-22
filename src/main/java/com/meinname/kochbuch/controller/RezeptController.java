@@ -41,4 +41,9 @@ public class RezeptController {
         rezept.setZutaten(zutatenListe);
         return rezeptRepo.save(rezept);
     }
+    
+    @DeleteMapping("/{id}")
+    public void rezeptLoeschen(@PathVariable Long id) {
+    	rezeptRepo.deleteById(id);
+    }
 }

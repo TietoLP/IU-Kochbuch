@@ -12,14 +12,19 @@ import java.util.List;
 @RequestMapping("/api/nutzer")
 public class NutzerController {
 
-    private final NutzerRepository nutzerRepository;
+    private final NutzerRepository nutzerRepo;
 
     public NutzerController(NutzerRepository nutzerRepository) {
-        this.nutzerRepository = nutzerRepository;
+        this.nutzerRepo = nutzerRepository;
     }
 
     @PostMapping
     public Nutzer neueNutzer(@RequestBody Nutzer nutzer) {
-        return nutzerRepository.save(nutzer);
+        return nutzerRepo.save(nutzer);
+    }
+    
+    @DeleteMapping("/{id}")
+    public void nutzerLoeschen(@PathVariable Long id) {
+    	nutzerRepo.deleteById(id);
     }
 }

@@ -12,14 +12,19 @@ import java.util.List;
 @RequestMapping("/api/schwierigkeitsgrad")
 public class SchwierigkeitsgradController {
 
-    private final SchwierigkeitsgradRepository schwierigkeitsgradRepository;
+    private final SchwierigkeitsgradRepository schwierigkeitsgradRepo;
 
     public SchwierigkeitsgradController(SchwierigkeitsgradRepository schwierigkeitsgradRepository) {
-        this.schwierigkeitsgradRepository = schwierigkeitsgradRepository;
+        this.schwierigkeitsgradRepo = schwierigkeitsgradRepository;
     }
 
     @PostMapping
     public Schwierigkeitsgrad neueSchwierigkeitsgrad(@RequestBody Schwierigkeitsgrad schwierigkeitsgrad) {
-        return schwierigkeitsgradRepository.save(schwierigkeitsgrad);
+        return schwierigkeitsgradRepo.save(schwierigkeitsgrad);
+    }
+    
+    @DeleteMapping("/{id}")
+    public void schwierigkeitsgradLoeschen(@PathVariable Long id) {
+    	schwierigkeitsgradRepo.deleteById(id);
     }
 }

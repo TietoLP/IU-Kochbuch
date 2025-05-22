@@ -12,14 +12,19 @@ import java.util.List;
 @RequestMapping("/api/favorit")
 public class FavoritController {
 
-    private final FavoritRepository favoritRepository;
+    private final FavoritRepository favoritRepo;
 
     public FavoritController(FavoritRepository favoritRepository) {
-        this.favoritRepository = favoritRepository;
+        this.favoritRepo = favoritRepository;
     }
 
     @PostMapping
     public Favorit neueFavorit(@RequestBody Favorit favorit) {
-        return favoritRepository.save(favorit);
+        return favoritRepo.save(favorit);
+    }
+    
+    @DeleteMapping("/{id}")
+    public void favoritLoeschen(@PathVariable Long id) {
+    	favoritRepo.deleteById(id);
     }
 }

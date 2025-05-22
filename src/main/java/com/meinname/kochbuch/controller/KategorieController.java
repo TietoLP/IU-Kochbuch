@@ -12,14 +12,19 @@ import java.util.List;
 @RequestMapping("/api/kategorie")
 public class KategorieController {
 
-    private final KategorieRepository kategorieRepository;
+    private final KategorieRepository kategorieRepo;
 
     public KategorieController(KategorieRepository kategorieRepository) {
-        this.kategorieRepository = kategorieRepository;
+        this.kategorieRepo = kategorieRepository;
     }
 
     @PostMapping
     public Kategorie neueKategorie(@RequestBody Kategorie kategorie) {
-        return kategorieRepository.save(kategorie);
+        return kategorieRepo.save(kategorie);
+    }
+    
+    @DeleteMapping("/{id}")
+    public void kategorieLoeschen(@PathVariable Long id) {
+    	kategorieRepo.deleteById(id);
     }
 }

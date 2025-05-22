@@ -12,14 +12,19 @@ import java.util.List;
 @RequestMapping("/api/kommentar")
 public class KommentarController {
 
-    private final KommentarRepository kommentarRepository;
+    private final KommentarRepository kommentarRepo;
 
     public KommentarController(KommentarRepository kommentarRepository) {
-        this.kommentarRepository = kommentarRepository;
+        this.kommentarRepo = kommentarRepository;
     }
 
     @PostMapping
     public Kommentar neueKommentar(@RequestBody Kommentar kommentar) {
-        return kommentarRepository.save(kommentar);
+        return kommentarRepo.save(kommentar);
+    }
+    
+    @DeleteMapping("/{id}")
+    public void kommentarLoeschen(@PathVariable Long id) {
+    	kommentarRepo.deleteById(id);
     }
 }

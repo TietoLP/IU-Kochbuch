@@ -9,17 +9,22 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/zutaten")
+@RequestMapping("/api/zutat")
 public class ZutatController {
 
-    private final ZutatRepository zutatRepository;
+    private final ZutatRepository zutatRepo;
 
     public ZutatController(ZutatRepository zutatRepository) {
-        this.zutatRepository = zutatRepository;
+        this.zutatRepo = zutatRepository;
     }
 
     @PostMapping
     public Zutat neueZutat(@RequestBody Zutat zutat) {
-        return zutatRepository.save(zutat);
+        return zutatRepo.save(zutat);
+    }
+    
+    @DeleteMapping("/{id}")
+    public void zutatLoeschen(@PathVariable Long id) {
+    	zutatRepo.deleteById(id);
     }
 }

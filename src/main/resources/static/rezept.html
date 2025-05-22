@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Rezeptdetails</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="cook-navbar">
+        <nav>
+            <li><a href="index.html">Startseite</a></li>
+            <li><a href="#">Rezepte</a></li>
+        </nav>
+    </div>
+    <div class="card" id="rezeptDetail">
+        <h2 id="rezeptTitel">Lade Rezept...</h2>
+        <p id="rezeptBeschreibung"></p>
+        <!-- Optional: Zutatenliste etc. -->
+    </div>
+
+    <script>
+        // Rezept-ID aus URL extrahieren
+        const rezeptId = window.location.pathname.split("/").pop();
+
+        fetch('/api/rezept/' + rezeptId)
+            .then(response => {
+                if (!response.ok) throw new Error("Rezept nicht gefunden");
+                return response.json();
+            })
+            .then(r => {
+                document.getElementById('rezeptTitel').textContent = r.titel;
+                document.getElementById('rezeptBeschreibung').textContent = r.beschreibung || 'Keine Beschreibung vorhanden.';
+                // Zutaten
+                const zutatenListe = document.createElement('ul');
+                r.zutaten.forEach(z => {
+                    const zutat = document.createElement('li');
+                    zutat.textContent = z.name;
+                    zutatenListe.appendChild(zutat);
+                });
+                document.getElementById('rezeptDetail').appendChild(zutatenListe);
+
+            })
+            .catch(error => {
+                document.getElementById('rezeptDetail').innerHTML = '<p>Fehler: Rezept konnte nicht geladen werden.</p>';
+                console.error(error);
+            });
+    </script>
+</body>
+</html>

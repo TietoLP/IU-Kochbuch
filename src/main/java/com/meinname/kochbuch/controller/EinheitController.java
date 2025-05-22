@@ -1,6 +1,7 @@
 package com.meinname.kochbuch.controller;
 
 import com.meinname.kochbuch.model.Einheit;
+import com.meinname.kochbuch.model.Rezept;
 import com.meinname.kochbuch.repository.EinheitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,12 @@ public class EinheitController {
 
     public EinheitController(EinheitRepository einheitRepository) {
         this.einheitRepo = einheitRepository;
+    }
+    
+    @GetMapping("/{id}")
+    public Einheit getEinheitById(@PathVariable Long id) {
+        return einheitRepo.findById(id)
+            .orElseThrow(() -> new RuntimeException("Einheit mit ID " + id + " nicht gefunden"));
     }
 
     @PostMapping

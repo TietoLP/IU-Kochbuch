@@ -1,6 +1,7 @@
 package com.meinname.kochbuch.controller;
 
 import com.meinname.kochbuch.model.Favorit;
+import com.meinname.kochbuch.model.Rezept;
 import com.meinname.kochbuch.repository.FavoritRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,12 @@ public class FavoritController {
 
     public FavoritController(FavoritRepository favoritRepository) {
         this.favoritRepo = favoritRepository;
+    }
+    
+    @GetMapping("/{id}")
+    public Favorit getFavoritById(@PathVariable Long id) {
+        return favoritRepo.findById(id)
+            .orElseThrow(() -> new RuntimeException("Favorit mit ID " + id + " nicht gefunden"));
     }
 
     @PostMapping

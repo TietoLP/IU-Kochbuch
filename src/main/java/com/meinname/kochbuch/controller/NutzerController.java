@@ -1,6 +1,7 @@
 package com.meinname.kochbuch.controller;
 
 import com.meinname.kochbuch.model.Nutzer;
+import com.meinname.kochbuch.model.Rezept;
 import com.meinname.kochbuch.repository.NutzerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,12 @@ public class NutzerController {
 
     public NutzerController(NutzerRepository nutzerRepository) {
         this.nutzerRepo = nutzerRepository;
+    }
+    
+    @GetMapping("/{id}")
+    public Nutzer getNutzerById(@PathVariable Long id) {
+        return nutzerRepo.findById(id)
+            .orElseThrow(() -> new RuntimeException("Nutzer mit ID " + id + " nicht gefunden"));
     }
 
     @PostMapping

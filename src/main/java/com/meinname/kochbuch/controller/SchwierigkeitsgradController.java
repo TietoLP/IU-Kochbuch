@@ -1,5 +1,6 @@
 package com.meinname.kochbuch.controller;
 
+import com.meinname.kochbuch.model.Rezept;
 import com.meinname.kochbuch.model.Schwierigkeitsgrad;
 import com.meinname.kochbuch.repository.SchwierigkeitsgradRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,12 @@ public class SchwierigkeitsgradController {
 
     public SchwierigkeitsgradController(SchwierigkeitsgradRepository schwierigkeitsgradRepository) {
         this.schwierigkeitsgradRepo = schwierigkeitsgradRepository;
+    }
+    
+    @GetMapping("/{id}")
+    public Schwierigkeitsgrad getSchwierigkeitsgradById(@PathVariable Long id) {
+        return schwierigkeitsgradRepo.findById(id)
+            .orElseThrow(() -> new RuntimeException("Schwierigkeitsgrad mit ID " + id + " nicht gefunden"));
     }
 
     @PostMapping

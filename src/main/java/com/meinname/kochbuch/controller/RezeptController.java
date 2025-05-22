@@ -26,6 +26,12 @@ public class RezeptController {
         return rezeptRepo.findAll();
     }
     
+    @GetMapping("/{id}")
+    public Rezept getRezeptById(@PathVariable Long id) {
+        return rezeptRepo.findById(id)
+            .orElseThrow(() -> new RuntimeException("Rezept mit ID " + id + " nicht gefunden"));
+    }
+    
     // Hiermit kann man Rezepte auch ohne ausformulierte Zutaten hinzufügen. Hier reichen die Zutaten-Ids
     @PostMapping
     public Rezept neuesRezept(@RequestBody Rezept rezept) {

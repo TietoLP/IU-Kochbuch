@@ -1,5 +1,6 @@
 package com.meinname.kochbuch.controller;
 
+import com.meinname.kochbuch.model.Rezept;
 import com.meinname.kochbuch.model.Zutat;
 import com.meinname.kochbuch.repository.ZutatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,12 @@ public class ZutatController {
 
     public ZutatController(ZutatRepository zutatRepository) {
         this.zutatRepo = zutatRepository;
+    }
+    
+    @GetMapping("/{id}")
+    public Zutat getZutatById(@PathVariable Long id) {
+        return zutatRepo.findById(id)
+            .orElseThrow(() -> new RuntimeException("Zutat mit ID " + id + " nicht gefunden"));
     }
 
     @PostMapping

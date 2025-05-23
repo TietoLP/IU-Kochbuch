@@ -5,16 +5,17 @@
     <title>Kochbuch - Startseite</title>
 	<link rel="stylesheet" href="/css/style.css">
 </head>
-<body>
+<body class="landingPage">
 	<div class="cook-navbar">
 		<nav>
 			<li><a href="/index.html">Startseite</a></li>
 			<li><a href="#">Rezepte</a></li>
 			<li><a href="#">Eigene Rezepte</a></li>
 			<li><a href="#">Favoriten</a></li>
+			<li><a href="#">Neues Rezept</a></li>
 		</nav>
 	</div>
-    <h1>Meine Rezepte</h1>
+    <h1>Alle Rezepte</h1>
     <ul id="rezeptListe"></ul>
 
     <script>
@@ -37,8 +38,11 @@
 					console.log("Bildpfad:", bildPfad); 
 					img.src = bildPfad;
 					img.alt = 'Rezeptbild';
-					img.style.maxWidth = '50%';
-					img.style.marginBottom = '10px';
+					img.style.maxWidth = '100%';
+					img.style.maxHeight = '200px';
+					img.style.minWidth = '100%';
+					img.style.minHeight = '200px';
+					img.style.borderRadius = '15px';
 		
 							
 					img.onerror = () => {

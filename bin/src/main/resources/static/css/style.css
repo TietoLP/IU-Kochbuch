@@ -155,51 +155,35 @@ table {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     background-color: #fff;
     text-align: center;
-    font-family: 'Roboto Serif',Arial, sans-serif;
+    font-family: Arial, sans-serif;
 }
 
 /* Titel */
 .card h2 {
     margin: 0 0 10px;
     font-size: 1.5em;
-    color: #003959;
-	font-family: 'Roboto Serif',Arial, sans-serif;
-	font-weight: 700;
-	text-decoration: none;
+    color: #333;
 }
 
 /* Beschreibung */
 .card p {
     margin: 0 0 15px;
+    color: #666;
     font-size: 1em;
-	color: #003959;
-	font-family: 'Roboto Serif',Arial, sans-serif;
-	font-weight: 400;
-	text-decoration: none;
 }
 
 /* Zutatenliste */
-#rezeptListe {
-    list-style-type:none;
+.card ul {
+    list-style-type: disc;
     padding-left: 20px;       /* Einrückung für die Liste */
     text-align: left;         /* Linksbündig für bessere Lesbarkeit */
-	color: #003959;
-	font-family: 'Roboto Serif',Arial, sans-serif;
+    color: #444;
     margin: 0;
     font-size: 1em;
 }
 
 /* Jedes einzelne Listen-Item etwas Abstand */
-#rezeptListe li {
+.card ul li {
     margin-bottom: 5px;
-}
-
-#rezeptListe li a{
-	text-decoration: none;
-}
-
-#rezeptListe li a div:hover{
-	border: 2px solid #c0d8fc;
-	color: #035482; /* Beispiel für Farbänderung */
 }
 

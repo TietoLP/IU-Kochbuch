@@ -30,23 +30,7 @@
 	
 	                const card = document.createElement('div');
 	                card.className = 'card';
-
-					// Erstellt das Bild
-					const bildPfad = '/images/' + r.titel.toLowerCase().replace(/\s+/g, '_') + '.jpg';
-					const img = document.createElement('img');
-					console.log("Bildpfad:", bildPfad); 
-					img.src = bildPfad;
-					img.alt = 'Rezeptbild';
-					img.style.maxWidth = '50%';
-					img.style.marginBottom = '10px';
-		
-							
-					img.onerror = () => {
-					  img.src = '/images/placeholder.jpg'; // Fallback image
-					};
-
-					card.appendChild(img);
-					
+	
 	                const titel = document.createElement('h2');
 	                titel.textContent = r.titel;
 	

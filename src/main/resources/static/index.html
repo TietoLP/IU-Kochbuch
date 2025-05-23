@@ -32,7 +32,7 @@
 	                card.className = 'card';
 
 					// Erstellt das Bild
-					const bildPfad = '/images/' + r.titel.toLowerCase().replace(/\s+/g, '_') + '.jpg';
+					const bildPfad = '/images/' + r.bilder[0];
 					const img = document.createElement('img');
 					console.log("Bildpfad:", bildPfad); 
 					img.src = bildPfad;

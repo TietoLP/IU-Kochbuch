@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Kochbuch - Startseite</title>
+	<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+	<div class="cook-navbar">
+		<nav>
+			<li><a href="/index.html">Startseite</a></li>
+			<li><a href="#">Rezepte</a></li>
+			<li><a href="#">Eigene Rezepte</a></li>
+			<li><a href="#">Favoriten</a></li>
+		</nav>
+	</div>
+    <h1>Meine Rezepte</h1>
+    <ul id="rezeptListe"></ul>
+
+    <script>
+	    fetch('/api/rezept')
+	        .then(response => response.json())
+	        .then(rezepte => {
+	            const liste = document.getElementById('rezeptListe');
+	            rezepte.forEach(r => {
+	                const li = document.createElement('li');
+	
+	                const link = document.createElement('a');
+	                link.href = '/rezept/' + r.id;
+	
+	                const card = document.createElement('div');
+	                card.className = 'card';
+	
+	                const titel = document.createElement('h2');
+	                titel.textContent = r.titel;
+	
+	                const beschreibung = document.createElement('p');
+	                beschreibung.textContent = r.beschreibung || 'Keine Beschreibung vorhanden.';
+
+	                card.appendChild(titel);
+	                card.appendChild(beschreibung);
+	                link.appendChild(card);
+	                li.appendChild(link);
+	                liste.appendChild(li);
+	            });
+	        })
+	        .catch(error => console.error('Fehler beim Laden der Rezepte:', error));
+	</script>
+</body>
+</html>

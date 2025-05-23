@@ -1,10 +1,10 @@
 package com.meinname.kochbuch.controller;
 
+import com.meinname.kochbuch.dto.RezeptDTO;
 import com.meinname.kochbuch.model.Rezept;
 import com.meinname.kochbuch.model.Zutat;
 import com.meinname.kochbuch.repository.RezeptRepository;
 import com.meinname.kochbuch.repository.ZutatRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,19 +19,22 @@ public class RezeptController {
     private RezeptRepository rezeptRepo;
 
     @Autowired
-    private ZutatRepository zutatRepo; // <-- Hinzufügen
+    private ZutatRepository zutatRepo;
 
     @GetMapping
-    public List<Rezept> getAlleRezepte() {
-        return rezeptRepo.findAll();
+    public List<RezeptDTO> getAlleRezepte() {
+        return rezeptRepo.findAll().stream()
+            .map(this::convertToDTO)
+            .collect(Collectors.toList());
     }
-    
+
     @GetMapping("/{id}")
-    public Rezept getRezeptById(@PathVariable Long id) {
-        return rezeptRepo.findById(id)
+    public RezeptDTO getRezeptById(@PathVariable Long id) {
+        Rezept rezept = rezeptRepo.findById(id)
             .orElseThrow(() -> new RuntimeException("Rezept mit ID " + id + " nicht gefunden"));
+        return convertToDTO(rezept);
     }
-    
+
     // Hiermit kann man Rezepte auch ohne ausformulierte Zutaten hinzufügen. Hier reichen die Zutaten-Ids
     @PostMapping
     public Rezept neuesRezept(@RequestBody Rezept rezept) {
@@ -47,9 +50,26 @@ public class RezeptController {
         rezept.setZutaten(zutatenListe);
         return rezeptRepo.save(rezept);
     }
-    
+
     @DeleteMapping("/{id}")
     public void rezeptLoeschen(@PathVariable Long id) {
-    	rezeptRepo.deleteById(id);
+        rezeptRepo.deleteById(id);
+    }
+
+    // Hilfsmethode: Rezept → DTO konvertieren
+    private RezeptDTO convertToDTO(Rezept rezept) {
+        RezeptDTO dto = new RezeptDTO();
+        dto.setId(rezept.getId());
+        dto.setTitel(rezept.getTitel());
+        dto.setKategorien(rezept.getKategorien());
+        dto.setZutaten(rezept.getZutaten());
+        dto.setBeschreibung(rezept.getBeschreibung());
+        dto.setZeitaufwand(rezept.getZeitaufwand());
+        dto.setSchwierigkeitsgrad(rezept.getSchwierigkeitsgrad());
+        dto.setBilder(rezept.getBilder());
+        dto.setNutzer(rezept.getNutzer() != null ? rezept.getNutzer().getId() : null);
+        dto.setKommentare(rezept.getKommentare());
+        dto.setBewertungen(rezept.getBewertungen());
+        return dto;
     }
 }

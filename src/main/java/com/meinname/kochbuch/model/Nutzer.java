@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Nutzer {
 
@@ -26,7 +28,7 @@ public class Nutzer {
     @OneToMany(mappedBy = "nutzer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Kommentar> kommentare = new ArrayList<>();
 
-    @OneToMany(mappedBy = "nutzer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "nutzer")
     private List<Favorit> favoriten = new ArrayList<>();
 
     // Standardkonstruktor

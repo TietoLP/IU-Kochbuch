@@ -1,71 +1,32 @@
-package com.meinname.kochbuch.model;
+package com.meinname.kochbuch.dto;
 
-import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.meinname.kochbuch.model.Bewertung;
+import com.meinname.kochbuch.model.Kategorie;
+import com.meinname.kochbuch.model.Kommentar;
+import com.meinname.kochbuch.model.Nutzer;
+import com.meinname.kochbuch.model.Schwierigkeitsgrad;
+import com.meinname.kochbuch.model.Zutat;
 
-@Entity
-public class Rezept {
+// Klasse um Loop zwischen Rezept-Nutzer zu verhindern
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class RezeptDTO {
     private Long id;
-
-    @Column(nullable = false)
     private String titel;
-
-    @ManyToMany
-    @JoinTable(
-        name = "rezept_kategorie",
-        joinColumns = @JoinColumn(name = "rezept_id"),
-        inverseJoinColumns = @JoinColumn(name = "kategorie_id")
-    )
     private List<Kategorie> kategorien = new ArrayList<>();
-
-    @ManyToMany(cascade = CascadeType.PERSIST) // <-- Cascade hinzufügen
-    @JoinTable(
-        name = "rezept_zutat",
-        joinColumns = @JoinColumn(name = "rezept_id"),
-        inverseJoinColumns = @JoinColumn(name = "zutat_id")
-    )
     private List<Zutat> zutaten = new ArrayList<>();
-
-    @Column(length = 2000)
     private String beschreibung;
-
-    private Integer zeitaufwand; // in Minuten z. B.
-
-    @ManyToOne
-    @JoinColumn(name = "schwierigkeitsgrad_id")
+    private Integer zeitaufwand;
     private Schwierigkeitsgrad schwierigkeitsgrad;
-
-    // Bilder – Liste von Pfaden oder URLs als JSON speichern (siehe Hinweis unten)
-    @ElementCollection
-    @CollectionTable(name = "rezept_bilder", joinColumns = @JoinColumn(name = "rezept_id"))
-    @Column(name = "bild_url")
     private List<String> bilder = new ArrayList<>();
-
-    @ManyToOne
-    @JoinColumn(name = "nutzer_id")
-    private Nutzer nutzer;
-
-    @OneToMany(mappedBy = "rezept", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Long nutzer;
     private List<Kommentar> kommentare = new ArrayList<>();
-
-    @OneToMany(mappedBy = "rezept", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Bewertung> bewertungen = new ArrayList<>();
 
-    // Konstruktoren
-    public Rezept() {}
-
-    public Rezept(String titel) {
-        this.titel = titel;
-    }
-
     // Getter & Setter
-
+    
     public Long getId() {
         return id;
     }
@@ -130,11 +91,11 @@ public class Rezept {
         this.bilder = bilder;
     }
 
-    public Nutzer getNutzer() {
+    public Long getNutzer() {
         return nutzer;
     }
 
-    public void setNutzer(Nutzer nutzer) {
+    public void setNutzer(Long nutzer) {
         this.nutzer = nutzer;
     }
 

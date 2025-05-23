@@ -1,5 +1,6 @@
 package com.meinname.kochbuch.controller;
 
+import com.meinname.kochbuch.model.Bewertung;
 import com.meinname.kochbuch.model.Kategorie;
 import com.meinname.kochbuch.model.Rezept;
 import com.meinname.kochbuch.repository.KategorieRepository;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -17,6 +19,12 @@ public class KategorieController {
 
     public KategorieController(KategorieRepository kategorieRepository) {
         this.kategorieRepo = kategorieRepository;
+    }
+
+    @GetMapping
+    public List<Kategorie> getAlleKategorie() {
+        return kategorieRepo.findAll().stream()
+            .collect(Collectors.toList());
     }
     
     @GetMapping("/{id}")

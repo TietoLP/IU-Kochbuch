@@ -1,5 +1,6 @@
 package com.meinname.kochbuch.controller;
 
+import com.meinname.kochbuch.model.Bewertung;
 import com.meinname.kochbuch.model.Favorit;
 import com.meinname.kochbuch.model.FavoritId;
 import com.meinname.kochbuch.model.Rezept;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -18,6 +20,12 @@ public class FavoritController {
 
     public FavoritController(FavoritRepository favoritRepository) {
         this.favoritRepo = favoritRepository;
+    }
+
+    @GetMapping
+    public List<Favorit> getAlleFavorit() {
+        return favoritRepo.findAll().stream()
+            .collect(Collectors.toList());
     }
     
     @GetMapping("/{nutzerId}/{rezeptId}")

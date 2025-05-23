@@ -1,5 +1,6 @@
 package com.meinname.kochbuch.controller;
 
+import com.meinname.kochbuch.dto.RezeptDTO;
 import com.meinname.kochbuch.model.Bewertung;
 import com.meinname.kochbuch.model.Rezept;
 import com.meinname.kochbuch.repository.BewertungRepository;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -17,6 +19,12 @@ public class BewertungController {
 
     public BewertungController(BewertungRepository bewertungRepository) {
         this.bewertungRepo = bewertungRepository;
+    }
+
+    @GetMapping
+    public List<Bewertung> getAlleBewertungen() {
+        return bewertungRepo.findAll().stream()
+            .collect(Collectors.toList());
     }
     
     @GetMapping("/{id}")

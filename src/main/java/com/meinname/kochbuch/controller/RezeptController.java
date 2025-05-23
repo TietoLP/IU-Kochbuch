@@ -24,7 +24,7 @@ public class RezeptController {
     @GetMapping
     public List<RezeptDTO> getAlleRezepte() {
         return rezeptRepo.findAll().stream()
-            .map(this::convertToDTO)
+            .map(RezeptController::convertToDTO)
             .collect(Collectors.toList());
     }
 
@@ -57,7 +57,7 @@ public class RezeptController {
     }
 
     // Hilfsmethode: Rezept → DTO konvertieren
-    private RezeptDTO convertToDTO(Rezept rezept) {
+    private static RezeptDTO convertToDTO(Rezept rezept) {
         RezeptDTO dto = new RezeptDTO();
         dto.setId(rezept.getId());
         dto.setTitel(rezept.getTitel());
@@ -68,8 +68,8 @@ public class RezeptController {
         dto.setSchwierigkeitsgrad(rezept.getSchwierigkeitsgrad());
         dto.setBilder(rezept.getBilder());
         dto.setNutzer(rezept.getNutzer() != null ? rezept.getNutzer().getId() : null);
-        dto.setKommentare(rezept.getKommentare());
-        dto.setBewertungen(rezept.getBewertungen());
+        dto.setKommentare(rezept.getKommentare().stream().map(KommentarController::convertToDTO).collect(Collectors.toList()));
+        dto.setBewertungen(rezept.getBewertungen().stream().map(BewertungController::convertToDTO).collect(Collectors.toList()));
         return dto;
     }
 }

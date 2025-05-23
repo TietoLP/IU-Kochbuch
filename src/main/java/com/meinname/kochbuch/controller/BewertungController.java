@@ -27,7 +27,7 @@ public class BewertungController {
     @GetMapping
     public List<BewertungDTO> getAlleBewertungen() {
         return bewertungRepo.findAll().stream()
-            .map(this::convertToDTO)
+            .map(BewertungController::convertToDTO)
             .collect(Collectors.toList());
     }
     
@@ -49,7 +49,7 @@ public class BewertungController {
     }
 
     // Hilfsmethode: Rezept → DTO konvertieren
-    private BewertungDTO convertToDTO(Bewertung bewertung) {
+    public static BewertungDTO convertToDTO(Bewertung bewertung) {
     	BewertungDTO dto = new BewertungDTO(bewertung.getId(), bewertung.getNutzer().getId(), bewertung.getRezept().getId(), bewertung.getSterne());
         return dto;
     }

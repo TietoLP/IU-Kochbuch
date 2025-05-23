@@ -22,8 +22,8 @@ public class RezeptDTO {
     private Schwierigkeitsgrad schwierigkeitsgrad;
     private List<String> bilder = new ArrayList<>();
     private Long nutzer;
-    private List<Kommentar> kommentare = new ArrayList<>();
-    private List<Bewertung> bewertungen = new ArrayList<>();
+    private List<KommentarDTO> kommentare = new ArrayList<>();
+    private List<BewertungDTO> bewertungen = new ArrayList<>();
 
     // Getter & Setter
     
@@ -99,19 +99,19 @@ public class RezeptDTO {
         this.nutzer = nutzer;
     }
 
-    public List<Kommentar> getKommentare() {
+    public List<KommentarDTO> getKommentare() {
         return kommentare;
     }
 
-    public void setKommentare(List<Kommentar> kommentare) {
+    public void setKommentare(List<KommentarDTO> kommentare) {
         this.kommentare = kommentare;
     }
 
-    public List<Bewertung> getBewertungen() {
+    public List<BewertungDTO> getBewertungen() {
         return bewertungen;
     }
 
-    public void setBewertungen(List<Bewertung> bewertungen) {
+    public void setBewertungen(List<BewertungDTO> bewertungen) {
         this.bewertungen = bewertungen;
     }
 }

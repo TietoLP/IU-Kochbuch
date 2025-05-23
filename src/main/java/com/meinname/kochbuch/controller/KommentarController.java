@@ -26,7 +26,7 @@ public class KommentarController {
     @GetMapping
     public List<KommentarDTO> getAlleKommentarDTO() {
         return kommentarRepo.findAll().stream()
-            .map(this::convertToDTO)
+            .map(KommentarController::convertToDTO)
             .collect(Collectors.toList());
     }
     
@@ -48,7 +48,7 @@ public class KommentarController {
     }
 
     // Hilfsmethode: Rezept → DTO konvertieren
-    private KommentarDTO convertToDTO(Kommentar kommentar) {
+    public static KommentarDTO convertToDTO(Kommentar kommentar) {
     	KommentarDTO dto = new KommentarDTO(kommentar.getId(), kommentar.getText(), kommentar.getNutzer().getId(), kommentar.getRezept().getId());
         return dto;
     }

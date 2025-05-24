@@ -57,3 +57,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Binaries ###
+bin

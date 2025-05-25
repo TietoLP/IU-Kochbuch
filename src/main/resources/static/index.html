@@ -201,33 +201,50 @@
 					const kategorieSelectBearbeiten = document.getElementById('rezeptBearbeitenFormular').querySelector('select[name="kategorie"]');
 					
 					kategorien.forEach(k => {
-						const opt = document.createElement('option');
-						opt.value = k.id;
-						opt.textContent = k.name;
-						kategorieSelectErstellen.appendChild(opt);
-						kategorieSelectBearbeiten.appendChild(opt);
+					    // Erstelle eine neue Option für jedes Element in kategorien
+					    const optErstellen = document.createElement('option');
+					    optErstellen.value = k.id;
+					    optErstellen.textContent = k.name;
+
+					    const optBearbeiten = document.createElement('option');
+					    optBearbeiten.value = k.id;
+					    optBearbeiten.textContent = k.name;
+
+					    // Füge die Optionen den entsprechenden Select-Elementen hinzu
+					    kategorieSelectErstellen.appendChild(optErstellen);
+					    kategorieSelectBearbeiten.appendChild(optBearbeiten);
 					});
 
 					const zutatenSelectErstellen = document.getElementById('rezeptFormular').querySelector('select[name="zutaten"]');
 					const zutatenSelectBearbeiten = document.getElementById('rezeptBearbeitenFormular').querySelector('select[name="zutaten"]');
-					
+
 					zutaten.forEach(z => {
-						const opt = document.createElement('option');
-						opt.value = z.id;
-						opt.textContent = z.name;
-						zutatenSelectErstellen.appendChild(opt);
-						zutatenSelectBearbeiten.appendChild(opt);
+					    const optErstellen = document.createElement('option');
+					    optErstellen.value = z.id;
+					    optErstellen.textContent = z.name;
+
+					    const optBearbeiten = document.createElement('option');
+					    optBearbeiten.value = z.id;
+					    optBearbeiten.textContent = z.name;
+
+					    zutatenSelectErstellen.appendChild(optErstellen);
+					    zutatenSelectBearbeiten.appendChild(optBearbeiten);
 					});
 
 					const schwierigSelectErstellen = document.getElementById('rezeptFormular').querySelector('select[name="schwierigkeitsgrad"]');
 					const schwierigSelectBearbeiten = document.getElementById('rezeptBearbeitenFormular').querySelector('select[name="schwierigkeitsgrad"]');
-					
+
 					schwierigkeitsgrade.forEach(s => {
-						const opt = document.createElement('option');
-						opt.value = s.id;
-						opt.textContent = s.name;
-						schwierigSelectErstellen.appendChild(opt);
-						schwierigSelectBearbeiten.appendChild(opt);
+					    const optErstellen = document.createElement('option');
+					    optErstellen.value = s.id;
+					    optErstellen.textContent = s.name;
+
+					    const optBearbeiten = document.createElement('option');
+					    optBearbeiten.value = s.id;
+					    optBearbeiten.textContent = s.name;
+
+					    schwierigSelectErstellen.appendChild(optErstellen);
+					    schwierigSelectBearbeiten.appendChild(optBearbeiten);
 					});
 				} catch (err) {
 					console.error("Fehler beim Laden der Dropdown-Daten:", err);

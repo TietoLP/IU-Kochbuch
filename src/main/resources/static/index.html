@@ -42,6 +42,7 @@
 	        <label>Bild-Dateiname: <input type="text" name="bild"></label><br>
 
 	        <button type="submit">Absenden</button>
+			<button type="button" class="Verwerfen">Verwerfen</button>
 	    </form>
 	</div>
 	
@@ -58,218 +59,244 @@
 	        <label>Schwierigkeitsgrad: <select name="schwierigkeitsgrad" required></select></label><br>
 	        <label>Bild-Dateiname: <input type="text" name="bild"></label><br>
 	        <button type="submit">Speichern</button>
+			<button type="button" class="Verwerfen">Verwerfen</button>
 	    </form>
 	</div>
 	
 	
 	<script>
-	document.addEventListener('DOMContentLoaded', () => {
-	    // Rezepte laden
-	    fetch('/api/rezept')
-	        .then(response => response.json())
-	        .then(rezepte => {
-	            const liste = document.getElementById('rezeptListe');
-	            rezepte.forEach(r => {
-	                const li = document.createElement('li');
+		document.addEventListener('DOMContentLoaded', () => {
+			let aktuellBearbeitetesRezeptId = null;
 
-	                const card = document.createElement('div');
-	                card.className = 'card';
-	                card.style.position = 'relative'; // wichtig für Button-Positionierung
+			// Rezepte laden
+			fetch('/api/rezept')
+				.then(response => response.json())
+				.then(rezepte => {
+					const liste = document.getElementById('rezeptListe');
+					rezepte.forEach(r => {
+						const li = document.createElement('li');
 
-	                // 🔽 Link-Bereich (Bild, Titel, Beschreibung)
-	                const link = document.createElement('a');
-	                link.href = '/rezept/' + r.id;
+						const card = document.createElement('div');
+						card.className = 'card';
+						card.style.position = 'relative';
 
-	                const bildPfad = '/images/' + r.bilder[0];
-	                const img = document.createElement('img');
-	                img.src = bildPfad;
-	                img.alt = 'Rezeptbild';
-	                img.style.maxWidth = '100%';
-	                img.style.maxHeight = '200px';
-	                img.style.minWidth = '100%';
-	                img.style.minHeight = '200px';
-	                img.style.borderRadius = '15px';
-	                img.onerror = () => { img.src = '/images/placeholder.jpg'; };
+						const link = document.createElement('a');
+						link.href = '/rezept/' + r.id;
 
-	                const titel = document.createElement('h2');
-	                titel.textContent = r.titel;
+						const bildPfad = '/images/' + r.bilder[0];
+						const img = document.createElement('img');
+						img.src = bildPfad;
+						img.alt = 'Rezeptbild';
+						img.style.maxWidth = '100%';
+						img.style.maxHeight = '200px';
+						img.style.minWidth = '100%';
+						img.style.minHeight = '200px';
+						img.style.borderRadius = '15px';
+						img.onerror = () => { img.src = '/images/placeholder.jpg'; };
 
-	                const beschreibung = document.createElement('p');
-	                beschreibung.textContent = r.beschreibung || 'Keine Beschreibung vorhanden.';
+						const titel = document.createElement('h2');
+						titel.textContent = r.titel;
 
-	                link.appendChild(img);
-	                link.appendChild(titel);
-	                link.appendChild(beschreibung);
-	                card.appendChild(link);
+						const beschreibung = document.createElement('p');
+						beschreibung.textContent = r.beschreibung || 'Keine Beschreibung vorhanden.';
 
-	                // 🔽 Lösch-Button
-	                const loeschenButton = document.createElement('span');
-	                loeschenButton.className = 'loeschen';
-	                loeschenButton.textContent = '×';
-	                loeschenButton.title = 'Rezept löschen';
+						link.appendChild(img);
+						link.appendChild(titel);
+						link.appendChild(beschreibung);
+						card.appendChild(link);
 
-	                loeschenButton.addEventListener('click', async (e) => {
-	                    e.stopPropagation();
-	                    e.preventDefault();
+						// Löschen-Button
+						const loeschenButton = document.createElement('span');
+						loeschenButton.className = 'loeschen';
+						loeschenButton.textContent = '×';
+						loeschenButton.title = 'Rezept löschen';
+						loeschenButton.addEventListener('click', async (e) => {
+							e.stopPropagation();
+							e.preventDefault();
+							if (!confirm("Möchtest du dieses Rezept wirklich löschen?")) return;
+							const response = await fetch('/api/rezept/' + r.id, {
+								method: 'DELETE'
+							});
+							if (response.ok) {
+								alert('Rezept gelöscht');
+								li.remove();
+							} else {
+								alert('Fehler beim Löschen des Rezepts');
+							}
+						});
 
-	                    if (!confirm("Möchtest du dieses Rezept wirklich löschen?")) return;
+						// Bearbeiten-Button
+						const editButton = document.createElement('span');
+						editButton.className = 'bearbeiten';
+						editButton.textContent = '✎';
+						editButton.title = 'Rezept bearbeiten';
+						editButton.addEventListener('click', (e) => {
+							e.preventDefault();
+							e.stopPropagation();
+							const formular = document.getElementById('rezeptBearbeitenFormular');
 
-	                    const response = await fetch('/api/rezept/' + r.id, {
-	                        method: 'DELETE'
-	                    });
+							// Wenn bereits dieses Rezept bearbeitet wird -> schließen
+							if (formular.style.display === 'flex' && aktuellBearbeitetesRezeptId === r.id) {
+								formular.style.display = 'none';
+								aktuellBearbeitetesRezeptId = null;
+								return;
+							}
 
-	                    if (response.ok) {
-	                        alert('Rezept gelöscht');
-	                        li.remove();
-	                    } else {
-	                        alert('Fehler beim Löschen des Rezepts');
-	                    }
-	                });
+							// Neues Rezeptformular ausblenden, falls offen
+							document.getElementById('rezeptFormular').style.display = 'none';
 
-	                // 🔽 Bearbeiten-Button
-	                const editButton = document.createElement('span');
-	                editButton.className = 'bearbeiten';
-	                editButton.textContent = '✎';
-	                editButton.title = 'Rezept bearbeiten';
+							formular.style.display = 'flex';
+							aktuellBearbeitetesRezeptId = r.id;
 
-	                editButton.addEventListener('click', (e) => {
-	                    e.preventDefault();
-	                    e.stopPropagation();
+							const form = formular.querySelector('form');
+							form.id.value = r.id;
+							form.titel.value = r.titel;
+							form.beschreibung.value = r.beschreibung;
+							form.zeitaufwand.value = r.zeitaufwand;
+							form.bild.value = r.bilder[0];
+							form.kategorie.value = r.kategorien[0]?.id;
+							form.schwierigkeitsgrad.value = r.schwierigkeitsgrad?.id;
 
-	                    const formular = document.getElementById('rezeptBearbeitenFormular');
-	                    formular.style.display = 'block';
+							const zutatValues = r.zutaten.map(z => z.id);
+							Array.from(form.zutaten.options).forEach(opt => {
+								opt.selected = zutatValues.includes(parseInt(opt.value));
+							});
+						});
 
-	                    const form = formular.querySelector('form');
-	                    form.id.value = r.id;
-	                    form.titel.value = r.titel;
-	                    form.beschreibung.value = r.beschreibung;
-	                    form.zeitaufwand.value = r.zeitaufwand;
-	                    form.bild.value = r.bilder[0];
-	                    form.kategorie.value = r.kategorien[0]?.id;
-	                    form.schwierigkeitsgrad.value = r.schwierigkeitsgrad?.id;
+						card.appendChild(editButton);
+						card.appendChild(loeschenButton);
+						li.appendChild(card);
+						liste.appendChild(li);
+					});
+				})
+				.catch(error => console.error('Fehler beim Laden der Rezepte:', error));
 
-	                    const zutatValues = r.zutaten.map(z => z.id);
-	                    Array.from(form.zutaten.options).forEach(opt => {
-	                        opt.selected = zutatValues.includes(parseInt(opt.value));
-	                    });
-	                });
+			// Klick auf "Neues Rezept"
+			document.querySelector('.new-recipe a').addEventListener('click', (e) => {
+				e.preventDefault();
+				const formular = document.getElementById('rezeptFormular');
+				const bearbeitungsFormular = document.getElementById('rezeptBearbeitenFormular');
 
-	                // Buttons zur Card hinzufügen
-	                card.appendChild(editButton);
-	                card.appendChild(loeschenButton);
+				// Wenn schon geöffnet -> schließen
+				if (formular.style.display === 'flex') {
+					formular.style.display = 'none';
+				} else {
+					// Bearbeitungsformular schließen
+					bearbeitungsFormular.style.display = 'none';
+					aktuellBearbeitetesRezeptId = null;
+					formular.style.display = 'flex';
+				}
+			});
 
-	                li.appendChild(card);
-	                liste.appendChild(li);
-	            });
-	        })
-	        .catch(error => console.error('Fehler beim Laden der Rezepte:', error));
+			// Dropdowns befüllen
+			async function dropdownsBefuellen() {
+				try {
+					const [kategorien, zutaten, schwierigkeitsgrade] = await Promise.all([
+						fetch('/api/kategorie').then(r => r.json()),
+						fetch('/api/zutat').then(r => r.json()),
+						fetch('/api/schwierigkeitsgrad').then(r => r.json())
+					]);
 
-	    // Klick auf "Neues Rezept"
-	    document.querySelector('.new-recipe a').addEventListener('click', (e) => {
-	        e.preventDefault();
-	        document.getElementById('rezeptFormular').style.display = 'block';
-	    });
+					const kategorieSelect = document.querySelector('select[name="kategorie"]');
+					kategorien.forEach(k => {
+						const opt = document.createElement('option');
+						opt.value = k.id;
+						opt.textContent = k.name;
+						kategorieSelect.appendChild(opt);
+					});
 
-	    // Dropdowns befüllen
-	    async function dropdownsBefuellen() {
-	        try {
-	            const [kategorien, zutaten, schwierigkeitsgrade] = await Promise.all([
-	                fetch('/api/kategorie').then(r => r.json()),
-	                fetch('/api/zutat').then(r => r.json()),
-	                fetch('/api/schwierigkeitsgrad').then(r => r.json())
-	            ]);
+					const zutatenSelect = document.querySelector('select[name="zutaten"]');
+					zutaten.forEach(z => {
+						const opt = document.createElement('option');
+						opt.value = z.id;
+						opt.textContent = z.name;
+						zutatenSelect.appendChild(opt);
+					});
 
-	            const kategorieSelect = document.querySelector('select[name="kategorie"]');
-	            kategorien.forEach(k => {
-	                const opt = document.createElement('option');
-	                opt.value = k.id;
-	                opt.textContent = k.name;
-	                kategorieSelect.appendChild(opt);
-	            });
+					const schwierigSelect = document.querySelector('select[name="schwierigkeitsgrad"]');
+					schwierigkeitsgrade.forEach(s => {
+						const opt = document.createElement('option');
+						opt.value = s.id;
+						opt.textContent = s.name;
+						schwierigSelect.appendChild(opt);
+					});
+				} catch (err) {
+					console.error("Fehler beim Laden der Dropdown-Daten:", err);
+				}
+			}
 
-	            const zutatenSelect = document.querySelector('select[name="zutaten"]');
-	            zutaten.forEach(z => {
-	                const opt = document.createElement('option');
-	                opt.value = z.id;
-	                opt.textContent = z.name;
-	                zutatenSelect.appendChild(opt);
-	            });
+			dropdownsBefuellen();
 
-	            const schwierigSelect = document.querySelector('select[name="schwierigkeitsgrad"]');
-	            schwierigkeitsgrade.forEach(s => {
-	                const opt = document.createElement('option');
-	                opt.value = s.id;
-	                opt.textContent = s.name;
-	                schwierigSelect.appendChild(opt);
-	            });
-	        } catch (err) {
-	            console.error("Fehler beim Laden der Dropdown-Daten:", err);
-	        }
-	    }
+			// Neues Rezept speichern
+			document.getElementById('rezeptErstellenForm').addEventListener('submit', async function (e) {
+				e.preventDefault();
+				const form = e.target;
+				const data = {
+					titel: form.titel.value,
+					beschreibung: form.beschreibung.value,
+					zeitaufwand: parseInt(form.zeitaufwand.value),
+					kategorien: [{ id: parseInt(form.kategorie.value) }],
+					zutaten: Array.from(form.zutaten.selectedOptions).map(opt => ({ id: parseInt(opt.value) })),
+					schwierigkeitsgrad: { id: parseInt(form.schwierigkeitsgrad.value) },
+					bilder: [form.bild.value],
+					nutzer: { id: 1 }
+				};
 
-	    dropdownsBefuellen();
+				const response = await fetch('/api/rezept', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(data)
+				});
 
-	    // Neues Rezept speichern
-	    document.getElementById('rezeptErstellenForm').addEventListener('submit', async function(e) {
-	        e.preventDefault();
-	        const form = e.target;
+				if (response.ok) {
+					alert('Rezept erfolgreich erstellt!');
+					location.reload();
+				} else {
+					alert('Fehler beim Erstellen des Rezepts');
+				}
+			});
 
-	        const data = {
-	            titel: form.titel.value,
-	            beschreibung: form.beschreibung.value,
-	            zeitaufwand: parseInt(form.zeitaufwand.value),
-	            kategorien: [{ id: parseInt(form.kategorie.value) }],
-	            zutaten: Array.from(form.zutaten.selectedOptions).map(opt => ({ id: parseInt(opt.value) })),
-	            schwierigkeitsgrad: { id: parseInt(form.schwierigkeitsgrad.value) },
-	            bilder: [form.bild.value],
-	            nutzer: { id: 1 }
-	        };
+			// Rezept bearbeiten
+			document.getElementById('rezeptBearbeitenForm').addEventListener('submit', async function (e) {
+				e.preventDefault();
+				const form = e.target;
+				const data = {
+					id: parseInt(form.id.value),
+					titel: form.titel.value,
+					beschreibung: form.beschreibung.value,
+					zeitaufwand: parseInt(form.zeitaufwand.value),
+					kategorien: [{ id: parseInt(form.kategorie.value) }],
+					zutaten: Array.from(form.zutaten.selectedOptions).map(opt => ({ id: parseInt(opt.value) })),
+					schwierigkeitsgrad: { id: parseInt(form.schwierigkeitsgrad.value) },
+					bilder: [form.bild.value],
+					nutzer: { id: 1 }
+				};
 
-	        const response = await fetch('/api/rezept', {
-	            method: 'POST',
-	            headers: { 'Content-Type': 'application/json' },
-	            body: JSON.stringify(data)
-	        });
+				const response = await fetch('/api/rezept/' + data.id, {
+					method: 'PUT',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(data)
+				});
 
-	        if (response.ok) {
-	            alert('Rezept erfolgreich erstellt!');
-	            location.reload();
-	        } else {
-	            alert('Fehler beim Erstellen des Rezepts');
-	        }
-	    });
+				if (response.ok) {
+					alert('Rezept erfolgreich aktualisiert!');
+					location.reload();
+				} else {
+					alert('Fehler beim Aktualisieren des Rezepts');
+				}
+			});
+			
+			Array.from(document.getElementsByClassName('Verwerfen')).forEach(button => {
+				button.addEventListener('click', () => {
+					const formularNeu = document.getElementById('rezeptFormular');
+					const formularBearbeiten = document.getElementById('rezeptBearbeitenFormular');
 
-	    // Rezept bearbeiten
-	    document.getElementById('rezeptBearbeitenForm').addEventListener('submit', async function(e) {
-	        e.preventDefault();
-	        const form = e.target;
-
-	        const data = {
-	            id: parseInt(form.id.value),
-	            titel: form.titel.value,
-	            beschreibung: form.beschreibung.value,
-	            zeitaufwand: parseInt(form.zeitaufwand.value),
-	            kategorien: [{ id: parseInt(form.kategorie.value) }],
-	            zutaten: Array.from(form.zutaten.selectedOptions).map(opt => ({ id: parseInt(opt.value) })),
-	            schwierigkeitsgrad: { id: parseInt(form.schwierigkeitsgrad.value) },
-	            bilder: [form.bild.value],
-	            nutzer: { id: 1 }
-	        };
-
-	        const response = await fetch('/api/rezept/' + data.id, {
-	            method: 'PUT',
-	            headers: { 'Content-Type': 'application/json' },
-	            body: JSON.stringify(data)
-	        });
-
-	        if (response.ok) {
-	            alert('Rezept erfolgreich aktualisiert!');
-	            location.reload();
-	        } else {
-	            alert('Fehler beim Aktualisieren des Rezepts');
-	        }
-	    });
-	});
+					formularNeu.style.display = 'none';
+					formularBearbeiten.style.display = 'none';
+					aktuellBearbeitetesRezeptId = null;
+				});
+			});
+		});
 	</script>
 </body>
 </html>

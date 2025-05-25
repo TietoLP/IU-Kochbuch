@@ -331,3 +331,16 @@ li:hover .bearbeiten,
 li:hover .loeschen {
     display: inline;
 }
+
+#rezeptFormular{
+	position: absolute;
+	background: lightgray;
+	width: 99%;
+	height: 90%;
+	top: 110px;
+	border-radius: 22px;
+	left: 10px;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+}

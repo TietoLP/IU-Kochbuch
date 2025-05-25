@@ -85,7 +85,7 @@
 
                 // Schwierigkeitsgrad
                 const schwierig = document.createElement('p');
-                schwierig.innerHTML = `<span class="section-title">Schwierigkeitsgrad:</span> ${r.schwierigkeitsgrad ?? 'Keine Angabe'}`;
+                schwierig.innerHTML = `<span class="section-title">Schwierigkeitsgrad:</span> ${r.schwierigkeitsgrad.name ?? 'Keine Angabe'}`;
                 container.appendChild(schwierig);
 
                 // Bilder (Annahme: Array mit URLs)

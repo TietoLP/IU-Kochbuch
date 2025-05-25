@@ -196,29 +196,38 @@
 						fetch('/api/zutat').then(r => r.json()),
 						fetch('/api/schwierigkeitsgrad').then(r => r.json())
 					]);
-
-					const kategorieSelect = document.querySelector('select[name="kategorie"]');
+					
+					const kategorieSelectErstellen = document.getElementById('rezeptFormular').querySelector('select[name="kategorie"]');
+					const kategorieSelectBearbeiten = document.getElementById('rezeptBearbeitenFormular').querySelector('select[name="kategorie"]');
+					
 					kategorien.forEach(k => {
 						const opt = document.createElement('option');
 						opt.value = k.id;
 						opt.textContent = k.name;
-						kategorieSelect.appendChild(opt);
+						kategorieSelectErstellen.appendChild(opt);
+						kategorieSelectBearbeiten.appendChild(opt);
 					});
 
-					const zutatenSelect = document.querySelector('select[name="zutaten"]');
+					const zutatenSelectErstellen = document.getElementById('rezeptFormular').querySelector('select[name="zutaten"]');
+					const zutatenSelectBearbeiten = document.getElementById('rezeptBearbeitenFormular').querySelector('select[name="zutaten"]');
+					
 					zutaten.forEach(z => {
 						const opt = document.createElement('option');
 						opt.value = z.id;
 						opt.textContent = z.name;
-						zutatenSelect.appendChild(opt);
+						zutatenSelectErstellen.appendChild(opt);
+						zutatenSelectBearbeiten.appendChild(opt);
 					});
 
-					const schwierigSelect = document.querySelector('select[name="schwierigkeitsgrad"]');
+					const schwierigSelectErstellen = document.getElementById('rezeptFormular').querySelector('select[name="schwierigkeitsgrad"]');
+					const schwierigSelectBearbeiten = document.getElementById('rezeptBearbeitenFormular').querySelector('select[name="schwierigkeitsgrad"]');
+					
 					schwierigkeitsgrade.forEach(s => {
 						const opt = document.createElement('option');
 						opt.value = s.id;
 						opt.textContent = s.name;
-						schwierigSelect.appendChild(opt);
+						schwierigSelectErstellen.appendChild(opt);
+						schwierigSelectBearbeiten.appendChild(opt);
 					});
 				} catch (err) {
 					console.error("Fehler beim Laden der Dropdown-Daten:", err);

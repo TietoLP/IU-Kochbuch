@@ -50,6 +50,31 @@ public class RezeptController {
         rezept.setZutaten(zutatenListe);
         return rezeptRepo.save(rezept);
     }
+    
+    // Aktualisiert ein bestehendes Rezept
+    @PutMapping("/{id}")
+    public Rezept rezeptAktualisieren(@PathVariable Long id, @RequestBody Rezept aktualisiertesRezept) {
+        Rezept vorhandenesRezept = rezeptRepo.findById(id)
+            .orElseThrow(() -> new RuntimeException("Rezept mit ID " + id + " nicht gefunden"));
+
+        // Felder aktualisieren
+        vorhandenesRezept.setTitel(aktualisiertesRezept.getTitel());
+        vorhandenesRezept.setBeschreibung(aktualisiertesRezept.getBeschreibung());
+        vorhandenesRezept.setZeitaufwand(aktualisiertesRezept.getZeitaufwand());
+        vorhandenesRezept.setSchwierigkeitsgrad(aktualisiertesRezept.getSchwierigkeitsgrad());
+        vorhandenesRezept.setKategorien(aktualisiertesRezept.getKategorien());
+        vorhandenesRezept.setBilder(aktualisiertesRezept.getBilder());
+
+        // Zutaten aktualisieren (IDs aus dem Body validieren)
+        List<Zutat> neueZutaten = aktualisiertesRezept.getZutaten().stream()
+            .map(zutat -> zutatRepo.findById(zutat.getId().longValue())
+                .orElseThrow(() -> new RuntimeException("Zutat nicht gefunden: " + zutat.getId())))
+            .collect(Collectors.toList());
+
+        vorhandenesRezept.setZutaten(neueZutaten);
+
+        return rezeptRepo.save(vorhandenesRezept);
+    }
 
     @DeleteMapping("/{id}")
     public void rezeptLoeschen(@PathVariable Long id) {

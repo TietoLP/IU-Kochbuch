@@ -9,7 +9,7 @@
     <div class="cook-navbar">
         <nav>
             <li><a href="/index.html">Startseite</a></li>
-            <li><a href="#">Rezepte</a></li>
+			<li class="right-side"><a href="#">Login</a></li>
         </nav>
     </div>
     <div class="card-overview" id="rezeptDetail">
@@ -19,146 +19,155 @@
     </div>
 
     <script>
-        const rezeptId = window.location.pathname.split("/").pop();
-        const container = document.getElementById('rezeptDetail');
+		const rezeptId = window.location.pathname.split("/").pop();
+		const container = document.getElementById('rezeptDetail');
 
-        fetch('/api/rezept/' + rezeptId)
-            .then(response => {
-                if (!response.ok) throw new Error("Rezept nicht gefunden");
-                return response.json();
-            })
-            .then(r => {
-                container.innerHTML = ''; // Alte Ladeanzeige entfernen
+		fetch('/api/rezept/' + rezeptId)
+		    .then(response => {
+		        if (!response.ok) throw new Error("Rezept nicht gefunden");
+		        return response.json();
+		    })
+		    .then(r => {
+		        container.innerHTML = ''; // Alte Ladeanzeige entfernen
 
-                // Titel
-                const titel = document.createElement('h2');
-                titel.textContent = r.titel;
-                container.appendChild(titel);
+		        // Bilder
+		        if (!r.bilder || r.bilder.length === 0) {
+		            const keineBilder = document.createElement('p');
+		            keineBilder.textContent = 'Keine Bilder vorhanden.';
+		            container.appendChild(keineBilder);
+		        } else {
+		            r.bilder.forEach(url => {
+		                const img = document.createElement('img');
+		                img.src = "/images/" + url;
+		                img.alt = 'Rezeptbild';
+		                img.style.maxWidth = '100%';
+		                img.style.marginBottom = '10px';
+		                container.appendChild(img);
+		            });
+		        }
 
-                // Beschreibung
-                const beschreibung = document.createElement('p');
-                beschreibung.textContent = r.beschreibung || 'Keine Beschreibung vorhanden.';
-                container.appendChild(beschreibung);
+		        // Nur Textelemente kommen in dieses div
+		        const divContainer = document.createElement('div');
+		        divContainer.className = 'rezept-inhalt';
 
-                // Kategorien
-                const katTitel = document.createElement('p');
-                katTitel.className = 'section-title';
-                katTitel.textContent = 'Kategorien:';
-                container.appendChild(katTitel);
-                if (r.kategorien.length === 0) {
-                    const keineKat = document.createElement('p');
-                    keineKat.textContent = 'Keine Kategorien vorhanden.';
-                    container.appendChild(keineKat);
-                } else {
-                    const katListe = document.createElement('ul');
-                    r.kategorien.forEach(k => {
-                        const li = document.createElement('li');
-                        li.textContent = k.name || k; // Falls Kategorien nur Strings sind
-                        katListe.appendChild(li);
-                    });
-                    container.appendChild(katListe);
-                }
+		        // Titel
+		        const titel = document.createElement('h2');
+		        titel.textContent = r.titel;
+		        divContainer.appendChild(titel);
 
-                // Zutaten
-                const zutTitel = document.createElement('p');
-                zutTitel.className = 'section-title';
-                zutTitel.textContent = 'Zutaten:';
-                container.appendChild(zutTitel);
-                if (r.zutaten.length === 0) {
-                    const keineZut = document.createElement('p');
-                    keineZut.textContent = 'Keine Zutaten vorhanden.';
-                    container.appendChild(keineZut);
-                } else {
-                    const zutListe = document.createElement('ul');
-                    r.zutaten.forEach(z => {
-                        const li = document.createElement('li');
-                        li.textContent = z.name;
-                        zutListe.appendChild(li);
-                    });
-                    container.appendChild(zutListe);
-                }
+		        // Beschreibung
+		        const beschreibung = document.createElement('p');
+				beschreibung.style.color = '#55AFC2'
+		        beschreibung.textContent = r.beschreibung || 'Keine Beschreibung vorhanden.';
+		        divContainer.appendChild(beschreibung);
 
-                // Zeitaufwand
-                const zeit = document.createElement('p');
-                zeit.innerHTML = `<span class="section-title">Zeitaufwand:</span> ${r.zeitaufwand ?? 'Keine Angabe'}`;
-                container.appendChild(zeit);
+		        // Kategorien
+		        const katTitel = document.createElement('p');
+		        katTitel.className = 'section-title';
+				katTitel.className = 'kategorien';
+		        katTitel.textContent = 'Kategorien:';
+		        divContainer.appendChild(katTitel);
+		        if (r.kategorien.length === 0) {
+		            const keineKat = document.createElement('p');
+		            keineKat.textContent = 'Keine Kategorien vorhanden.';
+		            divContainer.appendChild(keineKat);
+		        } else {
+		            const katListe = document.createElement('ul');
+					katListe.className = 'Kategorien-list';
+		            r.kategorien.forEach(k => {
+		                const li = document.createElement('li');
+		                li.className = 'time-text';
+		                li.textContent = k.name || k;
+		                katListe.appendChild(li);
+		            });
+		            divContainer.appendChild(katListe);
+		        }
 
-                // Schwierigkeitsgrad
-                const schwierig = document.createElement('p');
-                schwierig.innerHTML = `<span class="section-title">Schwierigkeitsgrad:</span> ${r.schwierigkeitsgrad.name ?? 'Keine Angabe'}`;
-                container.appendChild(schwierig);
+		        // Zutaten
+		        const zutTitel = document.createElement('p');
+		        zutTitel.className = 'section-title';
+		        zutTitel.textContent = 'Zutaten:';
+		        divContainer.appendChild(zutTitel);
+		        if (r.zutaten.length === 0) {
+		            const keineZut = document.createElement('p');
+		            keineZut.textContent = 'Keine Zutaten vorhanden.';
+		            divContainer.appendChild(keineZut);
+		        } else {
+		            const zutListe = document.createElement('ul');
+					zutListe.className = 'Zutaten-list';
+		            r.zutaten.forEach(z => {
+		                const li = document.createElement('li');
+		                li.className = 'time-text';
+		                li.textContent = z.name;
+		                zutListe.appendChild(li);
+		            });
+		            divContainer.appendChild(zutListe);
+		        }
 
-                // Bilder (Annahme: Array mit URLs)
-                const bilderTitel = document.createElement('p');
-                bilderTitel.className = 'section-title';
-                bilderTitel.textContent = 'Bilder:';
-                container.appendChild(bilderTitel);
+		        // Zeitaufwand
+		        const zeit = document.createElement('p');
+		        zeit.innerHTML = `<span class="section-title">Zeitaufwand:</span> <span class="time-text">${r.zeitaufwand ?? 'Keine Angabe'} Minuten</span>`;
+		        divContainer.appendChild(zeit);
 
-                if (!r.bilder || r.bilder.length === 0) {
-                    const keineBilder = document.createElement('p');
-                    keineBilder.textContent = 'Keine Bilder vorhanden.';
-                    container.appendChild(keineBilder);
-                } else {
-                    r.bilder.forEach(url => {
-                        const img = document.createElement('img');
-                        img.src = "/images/" + url;
-                        img.alt = 'Rezeptbild';
-                        img.style.maxWidth = '100%';
-                        img.style.marginBottom = '10px';
-                        container.appendChild(img);
-                    });
-                }
+		        // Schwierigkeitsgrad
+		        const schwierig = document.createElement('p');
+		        schwierig.innerHTML = `<span class="section-title">Schwierigkeitsgrad:</span> <span class="time-text">${r.schwierigkeitsgrad.name ?? 'Keine Angabe'}</span>`;
+		        divContainer.appendChild(schwierig);
 
-                // Nutzer
-                const nutzer = document.createElement('p');
-                nutzer.innerHTML = `<span class="section-title">Nutzer:</span> ${r.nutzer ?? 'Keine Angabe'}`;
-                container.appendChild(nutzer);
+		        // Nutzer
+		        const nutzer = document.createElement('p');
+		        nutzer.innerHTML = `<span class="section-title">Nutzer:</span> <span class="time-text">${r.nutzer ?? 'Keine Angabe'}</span>`;
+		        divContainer.appendChild(nutzer);
 
-                // Kommentare (angenommen Array mit Objekten oder Strings)
-                const komTitel = document.createElement('p');
-                komTitel.className = 'section-title';
-                komTitel.textContent = 'Kommentare:';
-                container.appendChild(komTitel);
+		        // Kommentare
+		        const komTitel = document.createElement('p');
+		        komTitel.className = 'section-title';
+		        komTitel.textContent = 'Kommentare:';
+		        divContainer.appendChild(komTitel);
+		        if (!r.kommentare || r.kommentare.length === 0) {
+		            const keineKom = document.createElement('p');
+		            keineKom.className = 'time-text';
+		            keineKom.textContent = 'Keine Kommentare vorhanden.';
+		            divContainer.appendChild(keineKom);
+		        } else {
+		            const komListe = document.createElement('ul');
+		            r.kommentare.forEach(k => {
+		                const li = document.createElement('li');
+		                li.className = 'time-text';
+		                li.textContent = (typeof k === 'string') ? k : JSON.stringify(k);
+		                komListe.appendChild(li);
+		            });
+		            divContainer.appendChild(komListe);
+		        }
 
-                if (!r.kommentare || r.kommentare.length === 0) {
-                    const keineKom = document.createElement('p');
-                    keineKom.textContent = 'Keine Kommentare vorhanden.';
-                    container.appendChild(keineKom);
-                } else {
-                    const komListe = document.createElement('ul');
-                    r.kommentare.forEach(k => {
-                        const li = document.createElement('li');
-                        // Falls Kommentar ein Objekt, passe hier an:
-                        li.textContent = (typeof k === 'string') ? k : JSON.stringify(k);
-                        komListe.appendChild(li);
-                    });
-                    container.appendChild(komListe);
-                }
+		        // Bewertungen
+		        const bewTitel = document.createElement('p');
+		        bewTitel.className = 'section-title';
+		        bewTitel.textContent = 'Bewertungen:';
+		        divContainer.appendChild(bewTitel);
+		        if (!r.bewertungen || r.bewertungen.length === 0) {
+		            const keineBew = document.createElement('p');
+		            keineBew.className = 'time-text';
+		            keineBew.textContent = 'Keine Bewertungen vorhanden.';
+		            divContainer.appendChild(keineBew);
+		        } else {
+		            const bewListe = document.createElement('ul');
+		            r.bewertungen.forEach(b => {
+		                const li = document.createElement('li');
+		                li.className = 'time-text';
+		                li.textContent = (typeof b === 'string') ? b : JSON.stringify(b);
+		                bewListe.appendChild(li);
+		            });
+		            divContainer.appendChild(bewListe);
+		        }
 
-                // Bewertungen (ebenfalls Array)
-                const bewTitel = document.createElement('p');
-                bewTitel.className = 'section-title';
-                bewTitel.textContent = 'Bewertungen:';
-                container.appendChild(bewTitel);
-
-                if (!r.bewertungen || r.bewertungen.length === 0) {
-                    const keineBew = document.createElement('p');
-                    keineBew.textContent = 'Keine Bewertungen vorhanden.';
-                    container.appendChild(keineBew);
-                } else {
-                    const bewListe = document.createElement('ul');
-                    r.bewertungen.forEach(b => {
-                        const li = document.createElement('li');
-                        li.textContent = (typeof b === 'string') ? b : JSON.stringify(b);
-                        bewListe.appendChild(li);
-                    });
-                    container.appendChild(bewListe);
-                }
-            })
-            .catch(err => {
-                container.innerHTML = '<p>Fehler: Rezept konnte nicht geladen werden.</p>';
-                console.error(err);
-            });
+		        // Am Ende alles zusammenfügen
+		        container.appendChild(divContainer);
+		    })
+		    .catch(err => {
+		        container.innerHTML = '<p>Fehler: Rezept konnte nicht geladen werden.</p>';
+		        console.error(err);
+		    });
     </script>
 </body>
 </html>

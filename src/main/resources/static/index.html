@@ -9,7 +9,6 @@
 	<div class="cook-navbar">
 		<nav>
 			<li><a href="/index.html">Startseite</a></li>
-			<li><a href="#">Rezepte</a></li>
 			<li><a href="#">Eigene Rezepte</a></li>
 			<li><a href="#">Favoriten</a></li>
 			<li class="right-side new-recipe"><a href="#">Neues Rezept</a></li>
@@ -55,7 +54,7 @@
 	        <label>Beschreibung: <textarea name="beschreibung"></textarea></label><br>
 	        <label>Zeitaufwand (Minuten): <input type="number" name="zeitaufwand" required></label><br>
 	        <label>Kategorie: <select name="kategorie" required></select></label><br>
-	        <label>Zutaten: <select name="zutaten" multiple required></select></label><br>
+	        <label>Zutaten (Strg + Klick für mehrere): <select name="zutaten" multiple required></select></label><br>
 	        <label>Schwierigkeitsgrad: <select name="schwierigkeitsgrad" required></select></label><br>
 	        <label>Bild-Dateiname: <input type="text" name="bild"></label><br>
 	        <button type="submit">Speichern</button>
@@ -101,7 +100,7 @@
 						beschreibung.textContent = r.beschreibung || 'Keine Beschreibung vorhanden.';
 						
 						const zeitaufwand = document.createElement('span');
-						zeitaufwand.textContent = "Zeitaufwand: " + r.zeitaufwand || 'Kein Zeitaufwand.';
+						zeitaufwand.textContent = "Zeitaufwand: " + r.zeitaufwand + " Minuten" || 'Kein Zeitaufwand.';
 
 						link.appendChild(img);
 						link.appendChild(titel);
